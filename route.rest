@@ -1,0 +1,17 @@
+GET http://localhost:8000/users/register
+
+###
+
+GET http://localhost:8000/users/65a99afbd1fed6e78a8b47e2
+
+###
+
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "name": "John",
+    "surname": "Kowalski",
+    "nick": "ScalaMaster",
+    "password": "admin"
+}
