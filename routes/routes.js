@@ -1,56 +1,64 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/model.js')
+const User = require('../models/userSchema.js')
+const Comment = require('../models/commentSchema.js')
+const Channel = require('../models/channelSchema.js')
+const asyncHandler = require('express-async-handler');
+const bcrypt = require('bcrypt')
+const mongoose = require('mongoose');
 
-//Getting all
-router.get('/register', async (req, res) => {
-    try {
-        const users = await User.find()
-        res.json(users)
-    } catch(err) {
-        res.status(500).json({ message: err.message })
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+      const uniquePreffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, uniquePreffix + '-' + file.originalname)
     }
-})
+  })
+  
+const upload = multer({ storage })
 
-//Getting One
-router.get('/:id', (req, res) => {
-    res.send(req.user)
-})
-//Creating One
-router.post('/', async (req, res) => {
+router.post('/register',  asyncHandler(async (req, res) => {
+    const hashedPwd = await bcrypt.hash(req.body.password, 10)
     const user = new User({
         "name": req.body.name,
         "surname": req.body.surname,
         "nick": req.body.nick,
-        "password": req.body.password
+        "email": req.body.email,
+        "password": hashedPwd
     })
-    try {
-        const newUser = await user.save()
-        res.status(201).json(newUser)
-    }   catch (err) {
-        res.status(400).json({ message: err.message })
+    if (!await getUserByEmail(req.body.email)){
+    const newUser = await user.save()
+    res.status(201).json(newUser)
+    } else {
+        res.status(500).json( {message: "User with that email already exists"})
     }
-})
-//Updating One
-router.patch('/:id', (req, res) => {
-    // res.user
-})
-//Deleting One
-router.delete('/:id', (req, res) => {
-    // res.user
-})
+    
+}))
 
-// async function getUser(req, res, next) {
-//     let user
-//     try {
-//         user = await User.findOne({id: req.params.id})
-//         if (user == null){
-//             return res.status(404).json({message: "No user"})
-//         }
-//     } catch (err) {
-//         return res.status(500).json({ message: err.message })
-//     }
-//     res.user = user
-//     next()
-// }
+router.post('/login', async (req,res) => {
+   
+    try {
+        const users = await User.findOne({ email: req.body.email })
+        if(users) {
+            bcrypt.compare(req.body.password, users.password, function(err, isMatch) {
+                if (isMatch) {
+                    res.cookie('user', users.email,  { expires: new Date(Date.now() + (5 * 60000)) }, {sameSite: "none", secure: true})
+                    res.status(201).json( { message: `user ${users.nick} logged in` });
+                    
+                } else {
+                    res.status(500).json({ message: "Incorrect password" });
+                }
+            });
+        }
+    } catch (err) {
+        res.status(404).json({message: err.message})
+    }}
+    )
+
+
+const getUserByEmail = (adress) => User.findOne({ email: adress });
+
 module.exports = router

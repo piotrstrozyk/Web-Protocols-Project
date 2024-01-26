@@ -1,14 +1,20 @@
-require('dotenv').config({ path: "./config.env" });
+require('dotenv').config({ path: "./.env" });
 const cors = require("cors")
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express();
-const port = process.env.PORT || 8000;
-const routes = require('./routes/routes.js')
+const port = process.env.PORT || 3000;
+const routes = require('./routes/routes.js');
+const cookieParser = require('cookie-parser');
 const uri = process.env.URI;
+const flash = require('express-flash');
 
-app.use(cors())
+app.use(cookieParser())
+app.use(flash())
+app.use(express.urlencoded( { extended: false }))
+app.use(cors({ origin: 'http://localhost:3001', credentials: true, exposedHeaders: ['Set-Cookie', 'Date', 'ETag'] }))
 app.use(express.json())
+app.use(routes)
 
 async function connect(){
     try {
@@ -21,8 +27,6 @@ async function connect(){
 
 connect();
 
-app.use('/users', routes)
-
-app.listen(8000, () => {
-    console.log("Server started on port 8000");
+app.listen(3000, () => {
+    console.log("Server started on port 3000");
 });
