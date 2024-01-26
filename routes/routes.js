@@ -7,6 +7,19 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose');
 
+
+const fs = require('fs');
+const util = require('util');
+const log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+
+console.log = function(d) { //
+  log_file.write(util.format(d) + '\n');
+
+};
+
+
+
+
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
