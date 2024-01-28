@@ -5,9 +5,8 @@ import axios from 'axios';
 const Chat = ({ selectedChannel }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const mqttServer = '037d34a79b3e409d91ec5ad108f219e3.s2.eu.hivemq.cloud:8884/mqtt'
+  const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
   const mqttClient = mqtt.connect(mqttServer)
-
   useEffect(() => {
     mqttClient.subscribe(selectedChannel);
 
@@ -25,7 +24,7 @@ const Chat = ({ selectedChannel }) => {
     e.preventDefault();
     if (newComment.trim() === '') return;
 
-    const response = await axios.post('http://localhost:5000/comments', {
+    const response = await axios.post('http://localhost:3000/comments', {
       channel: selectedChannel,
       text: newComment,
     });

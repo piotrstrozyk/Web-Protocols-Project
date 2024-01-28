@@ -7,9 +7,8 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose');
 const mqtt = require('mqtt');
-const mqttServer = '037d34a79b3e409d91ec5ad108f219e3.s2.eu.hivemq.cloud'
+const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
 const mqttClient = mqtt.connect(mqttServer)
-
 
 
 // const fs = require('fs');

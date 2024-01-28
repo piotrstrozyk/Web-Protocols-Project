@@ -9,8 +9,15 @@ const cookieParser = require('cookie-parser');
 const uri = process.env.URI;
 const flash = require('express-flash');
 const mqtt = require('mqtt');
-const mqttServer = 'mqtt://037d34a79b3e409d91ec5ad108f219e3:8883'
+const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
 const mqttClient = mqtt.connect(mqttServer)
+const WebSocket = require('ws');
+
+
+mqttClient.on('error', (err) => {
+    console.log('COnnection error', err);
+    mqttClient.end()
+})
 const io = require('socket.io')(3001)
 io.on('connection', socket => {
     const id = socket.handshake.query.id

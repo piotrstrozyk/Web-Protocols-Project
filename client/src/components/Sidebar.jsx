@@ -34,11 +34,11 @@ function Sidebar({ onSelectChannel }) {
           <Offcanvas.Title>Channels</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-        <ul>
-        {users.map(channel => (
-          <Button onClick={() => onSelectChannel(channel.title)}>{channel.title}</Button>
-        ))}
-      </ul>
+        <div>
+        {users.map((channel, index) => (
+           <Button key={index} onClick={() => onSelectChannel(channel.title)}>{channel.title}</Button>
+        ))}</div>
+      
         </Offcanvas.Body>
       </Offcanvas>
     </>
