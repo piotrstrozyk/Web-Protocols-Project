@@ -110,3 +110,7 @@ a:hover {
 a:visited {
   color: rgba(245, 245, 220, 0.596);
 }
+
+body{
+  background-color: #1a202c;
+}

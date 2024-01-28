@@ -1,14 +1,48 @@
-import classes from './style.module.css'
+import { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import axios from 'axios';
 
-const Sidebar = () => {
-    const divsArray = Array.from({ length: 5 }, (value, index) => (
-        <div key={index} className="custom-div">
-          Div {index + 1}
-        </div>
-      ));
+function Sidebar() {
+  const [show, setShow] = useState(false);
+  const [users, setUsers] = useState([]);
+
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/allchannels');
+        setUsers(response.data);
+      } catch (error) {
+        console.error(`Error fetching users: ${error.message}`);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
-    <div className={classes.sidebar}>{divsArray}</div>
-  )
+    <>
+      <Button style={{width: '100px', marginRight: '600px'}} variant="outline-light" onClick={handleShow}>
+        Channels
+      </Button>
+
+      <Offcanvas style={{backgroundColor: '#1e1f22', color: 'white'}} show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Channels</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+        <ul>
+        {users.map(user => (
+          <li key={user._id}>{user.title}</li>
+        ))}
+      </ul>
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
+  );
 }
 
-export default Sidebar
+export default Sidebar;

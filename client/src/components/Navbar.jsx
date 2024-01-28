@@ -1,16 +1,22 @@
-import React from 'react'
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { BrowserRouter as Router, Switch, ROute, Link } from "react-router-dom";
 
-const NavBar = () => {
+function ColorSchemesExample() {
   return (
-    <nav classname="nav">
-        <a href="/" className="site-site">Main Page</a>
-        <ul>
-            <li>
-                <a href="/admin">Admin</a>
-            </li>
-        </ul>
-    </nav>
-  )
+    <>
+      <Navbar style={{paddingLeft: '40%'}} bg="dark" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand href="/">Main Page</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link href="addchannel">Add Channel</Nav.Link>
+            <Nav.Link href="/profile">Profile</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+    </>
+  );
 }
 
-export default NavBar
+export default ColorSchemesExample;

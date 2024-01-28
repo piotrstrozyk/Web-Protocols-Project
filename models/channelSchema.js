@@ -6,8 +6,7 @@ const channelSchema = new mongoose.Schema({
         required: true
     },
     cover: {
-        type: String,
-        required: true
+        type: String
     },
     date: {
         type: Date,

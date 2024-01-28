@@ -17,12 +17,3 @@
     padding: 3rem 3rem;
     background-color: #2b2a33;
 }
-
-header{
-    position: fixed;
-    top: 0;
-    height: 50px;
-    width: 100%;
-    padding: 3rem 0;
-    background-color: #42414d;
-}

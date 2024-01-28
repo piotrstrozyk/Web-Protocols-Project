@@ -33,6 +33,8 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage })
 
+
+//POST###########################
 router.post('/register',  asyncHandler(async (req, res) => {
     const hashedPwd = await bcrypt.hash(req.body.password, 10)
     const user = new User({
@@ -70,6 +72,117 @@ router.post('/login', async (req,res) => {
         res.status(404).json({message: err.message})
     }}
     )
+
+router.post('/addchannel',  asyncHandler(async (req, res) => {
+    const channel = new Channel({
+        "title": req.body.title
+    })
+    const newChannel = await channel.save()
+    res.status(201).json(newChannel)
+}))
+    
+
+router.post('/addcomment',  asyncHandler(async (req, res) => {
+    const comment = new Comment({
+        "user": req.cookies.user,
+        "content": req.body.content,
+        "channel": req.body.channel
+    })
+    const newComment = await comment.save()
+    res.status(201).json(newComment)
+}))
+
+//###################GET
+router.get('/logout', (req, res) => {
+    res.clearCookie('user');
+    res.json({ message: 'Logout successful' });
+  });
+
+router.get('/allusers', (req, res) => {
+    new Promise((resolve, reject) => {
+        User.find()
+            .then(users => resolve(users))
+            .catch(err => reject({ message: err.message }));
+    })
+    .then(users => {
+        res.json(users);
+    })
+    .catch(err => {
+        res.status(500).json({ message: err.message });
+    });
+});
+
+router.get('/allchannels', async (req, res) => {
+    try {
+      const channels = await Channel.find();
+      res.json(channels);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+
+
+
+//DELETE#################################
+router.delete('/profile', asyncHandler(async (req, res) => {
+    const mail = await req.cookies.user
+    const users = await User.findOneAndDelete({ email: mail })
+    if(users!==undefined){
+        res.clearCookie('user');
+        res.json(`User ${mail} deleted`)
+    } else {
+        res.json(`Error`)
+    } 
+}))
+
+router.delete('/channel', asyncHandler(async (req, res) => {
+    const channel = await req.body.title
+    const remove = await Channel.findOneAndDelete({ _title: channel })
+    if(remove!==undefined){
+        res.json(`Channel ${channel} deleted`)
+    } else {
+        res.json(`Error`)
+    } 
+}))
+
+//PATCH########################################
+//Edit user
+router.patch('/admin/user/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updatedData = req.body;
+
+        const users = await User.findById(userId);
+        if (!users) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+        users.set(updatedData);
+        const updatedUser = await users.save();
+        res.json(updatedUser)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
+
+router.patch('/admin/channel/:id', async (req, res) => {
+    try {
+        const channelId = req.params.id;
+        const updatedData = req.body;
+
+        const channels = await Channel.findById(channelId);
+        if (!channels) {
+            return res.status(404).json({ message: 'Channel not found' });
+          }
+        channels.set(updatedData);
+        const updatedChannel = await channels.save();
+        res.json(updatedChannel)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
+
+
 
 
 const getUserByEmail = (adress) => User.findOne({ email: adress });
