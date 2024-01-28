@@ -6,6 +6,10 @@ const Channel = require('../models/channelSchema.js')
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose');
+const mqtt = require('mqtt');
+const mqttServer = '037d34a79b3e409d91ec5ad108f219e3.s2.eu.hivemq.cloud'
+const mqttClient = mqtt.connect(mqttServer)
+
 
 
 // const fs = require('fs');
@@ -91,6 +95,13 @@ router.post('/addcomment',  asyncHandler(async (req, res) => {
     const newComment = await comment.save()
     res.status(201).json(newComment)
 }))
+
+router.post('/comments', (req, res) => {
+    const { channel, text } = req.body;
+    mqttClient.publish(channel, text); // Publikuj komentarz do kanału MQTT
+    res.json({ message: 'Comment sent successfully' });
+  });
+  
 
 //###################GET
 router.get('/logout', (req, res) => {

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import axios from 'axios';
 
-function Sidebar() {
+function Sidebar({ onSelectChannel }) {
   const [show, setShow] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -35,8 +35,8 @@ function Sidebar() {
         </Offcanvas.Header>
         <Offcanvas.Body>
         <ul>
-        {users.map(user => (
-          <li key={user._id}>{user.title}</li>
+        {users.map(channel => (
+          <Button onClick={() => onSelectChannel(channel.title)}>{channel.title}</Button>
         ))}
       </ul>
         </Offcanvas.Body>
