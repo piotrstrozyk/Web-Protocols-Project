@@ -9,10 +9,8 @@ import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div>
-    
+    <div>  
     <Routes>
-    <Navbar />
     <Route path='/' element={<MainPage/>}/>
     </Routes>
   </div>
