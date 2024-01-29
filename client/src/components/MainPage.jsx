@@ -12,6 +12,7 @@ import Logout from './Logout';
 import { useNavigate } from "react-router-dom";
 //import Chat from './Chat';
 import SearchUsers from './SearchUsers';
+import FreeForum from './FreeForum';
 
 function MainPage() {
 
@@ -32,6 +33,7 @@ function MainPage() {
     <Logout />
    <Sidebar onSelectChannel={handleChannelSelect} />
    <SidebarRight />
+   <FreeForum />
     </>
   );
 }

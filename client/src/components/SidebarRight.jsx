@@ -36,7 +36,7 @@ function OffCanvasExample({ name, ...props }) {
         <Offcanvas.Body>
         <div>
         {users.map((channel, index) => (
-           <Button key={index}>{channel.nick}</Button>
+           <Button variant="outline-info" key={index}>{channel.nick}</Button>
         ))}</div>
       
         </Offcanvas.Body>

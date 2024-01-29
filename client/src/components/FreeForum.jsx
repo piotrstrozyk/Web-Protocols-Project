@@ -91,7 +91,7 @@ const FreeForum = () => {
   };
 
   return (
-    <div>
+    <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
       <h2>General</h2>
       <div>
         {messages.map((message, index) => (

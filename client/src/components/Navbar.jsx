@@ -13,7 +13,6 @@ function ColorSchemesExample() {
             <Nav.Link href="addchannel">Add Channel</Nav.Link>
             <Nav.Link href="/profile">Profile</Nav.Link>
             <Nav.Link href="/search">Search</Nav.Link>
-            <Nav.Link href="/forum">General</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
