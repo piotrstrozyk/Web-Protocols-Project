@@ -1,25 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import axios from 'axios';
 
 function OffCanvasExample({ name, ...props }) {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
+  const [users, setUsers] = useState([]);
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('https://localhost:3000/allusers');
+        setUsers(response.data);
+      } catch (error) {
+        console.error(`Error fetching users: ${error.message}`);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <>
-      <Button style={{width: '100px'}} variant="outline-light" onClick={handleShow}>
-        End
+      <Button style={{width: '100px', marginRight: '600px'}} variant="outline-light" onClick={handleShow}>
+        Users
       </Button>
-      <Offcanvas style={{backgroundColor: '#1e1f22', color: 'white'}} show={show} onHide={handleClose} {...props}>
+
+      <Offcanvas placement='end' style={{backgroundColor: '#1e1f22', color: 'white'}} show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+          <Offcanvas.Title>Users</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
+        <div>
+        {users.map((channel, index) => (
+           <Button key={index}>{channel.nick}</Button>
+        ))}</div>
+      
         </Offcanvas.Body>
       </Offcanvas>
     </>

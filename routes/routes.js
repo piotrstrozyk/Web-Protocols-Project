@@ -113,19 +113,14 @@ router.get('/logout', (req, res) => {
     res.json({ message: 'Logout successful' });
   });
 
-router.get('/allusers', (req, res) => {
-    new Promise((resolve, reject) => {
-        User.find()
-            .then(users => resolve(users))
-            .catch(err => reject({ message: err.message }));
-    })
-    .then(users => {
-        res.json(users);
-    })
-    .catch(err => {
-        res.status(500).json({ message: err.message });
-    });
-});
+  router.get('/allusers', async (req, res) => {
+    try {
+      const users = await User.find();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 router.get('/allchannels', async (req, res) => {
     try {
@@ -162,15 +157,15 @@ router.delete('/profile', asyncHandler(async (req, res) => {
     } 
 }))
 
-router.delete('/channel', asyncHandler(async (req, res) => {
-    const channel = await req.body.title
-    const remove = await Channel.findOneAndDelete({ _title: channel })
-    if(remove!==undefined){
-        res.json(`Channel ${channel} deleted`)
-    } else {
-        res.json(`Error`)
-    } 
-}))
+router.delete('/api/channels/:name', async (req, res) => {
+    const channelNamePattern = new RegExp(req.params.name, 'i'); // Ignoruj wielkość liter
+    try {
+      const result = await Channel.deleteMany({ title: channelNamePattern });
+      res.json({ deletedCount: result.deletedCount });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 //PATCH########################################
 //Edit user
@@ -186,23 +181,6 @@ router.patch('/profile', async (req, res) => {
         users.set(updatedData);
         const updatedUser = await users.save();
         res.json(updatedUser)
-    } catch (err) {
-        res.status(500).json({message: err.message})
-    }
-})
-
-router.patch('/admin/channel/:id', async (req, res) => {
-    try {
-        const channelId = req.params.id;
-        const updatedData = req.body;
-
-        const channels = await Channel.findById(channelId);
-        if (!channels) {
-            return res.status(404).json({ message: 'Channel not found' });
-          }
-        channels.set(updatedData);
-        const updatedChannel = await channels.save();
-        res.json(updatedChannel)
     } catch (err) {
         res.status(500).json({message: err.message})
     }

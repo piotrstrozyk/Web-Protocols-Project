@@ -27,7 +27,7 @@ import axios from 'axios';
         }
       };
     return (
-      <Button style={{width: '100px', marginLeft: '50px'}} type='submit' onClick={handleLogout} variant="danger">Logout</Button>
+      <Button style={{width: '100px', marginLeft: '10px', marginRight: '10px'}} type='submit' onClick={handleLogout} variant="danger">Logout</Button>
   
     );
   }

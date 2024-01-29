@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import ChannelList from './ChannelDelete';
 
 
 const AddChannel = () => {
@@ -32,7 +33,8 @@ const AddChannel = () => {
         onSubmit,
     });
     console.log(errors);
-    return (
+    return (<>
+    
         <form onSubmit={handleSubmit} autoComplete='off'>
             <label htmlFor='text'>Server name</label>
             <input
@@ -47,6 +49,8 @@ const AddChannel = () => {
             {errors.email && touched.email && <p className="error">{errors.email}</p>}
              <button disabled={isSubmitting} type='submit'>Submit</button>
         </form>
+        <ChannelList />
+        </>
     );
 };
 export default AddChannel;
