@@ -8,7 +8,7 @@ import axios from 'axios';
     const handleLogout = async () => {
         try {
           // Wysyłamy żądanie do endpointu /logout na serwerze
-          const response = await axios.get('http://localhost:3000/logout');
+          const response = await axios.get('https://localhost:3000/logout');
           alert("Logout successful")
           // Sprawdzamy, czy żądanie zakończyło się sukcesem
           if (response.status === 200) {

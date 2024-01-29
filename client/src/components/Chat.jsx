@@ -1,32 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import mqtt from 'mqtt';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 
 const Chat = ({ selectedChannel }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
-  const mqttClient = mqtt.connect(mqttServer)
-  useEffect(() => {
-    mqttClient.subscribe(selectedChannel);
+//  const mqttServer = 'ws://g51ea156.ala.us-east-1.emqxsl.com'
+//  const mqttClient = mqtt.connect(mqttServer)
+//   useEffect(() => {
+//     mqttClient.subscribe(selectedChannel);
 
-    mqttClient.on('message', (topic, message) => {
-      setComments(prevComments => [...prevComments, { channel: topic, text: message.toString() }]);
-    });
+//     mqttClient.on('message', (topic, message) => {
+//       setComments(prevComments => [...prevComments, { channel: topic, content: message.toString() }]);
+//     });
 
-    return () => {
-      mqttClient.end();
-    };
-  }, [selectedChannel]);
+//     return () => {
+//       mqttClient.end();
+//     };
+//   }, [selectedChannel]);
 
   
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (newComment.trim() === '') return;
 
-    const response = await axios.post('http://localhost:3000/comments', {
-      channel: selectedChannel,
-      text: newComment,
+    const response = await axios.post('https://localhost:3000/comments', {
+      user: Cookies.get('user'),
+      content: newComment,
+      channel: selectedChannel
     });
 
     console.log(response.data.message);

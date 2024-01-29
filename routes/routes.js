@@ -7,8 +7,9 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose');
 const mqtt = require('mqtt');
-const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
-const mqttClient = mqtt.connect(mqttServer)
+// const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
+// const mqttClient = mqtt.connect(mqttServer)
+
 
 
 // const fs = require('fs');
@@ -36,6 +37,10 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage })
 
+router.get('/', (req,res) => {
+    console.log("Hello")
+    res.status(201).json({message: "all good"})
+})
 
 //POST###########################
 router.post('/register',  asyncHandler(async (req, res) => {
@@ -95,10 +100,14 @@ router.post('/addcomment',  asyncHandler(async (req, res) => {
     res.status(201).json(newComment)
 }))
 
-router.post('/comments', (req, res) => {
-    const { channel, text } = req.body;
-    mqttClient.publish(channel, text); // Publikuj komentarz do kanału MQTT
-    res.json({ message: 'Comment sent successfully' });
+router.post('/comments', async(req, res) => {
+    const comment = new Comment({
+        "user": req.cookies.user,
+        "content": req.body.content,
+        "channel": req.body.channel
+    })
+    const newComment = await comment.save()
+    res.status(201).json(newComment)
   });
   
 

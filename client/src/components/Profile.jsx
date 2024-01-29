@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Profile = () => {
   const navigate = useNavigate();
   const onSubmit = async (values, actions) => {
-    fetch("http://localhost:3000/profile", {
+    fetch("https://localhost:3000/profile", {
         method: 'PATCH',
         body: JSON.stringify(values),
         headers: { 'Content-Type': 'application/json' },
@@ -25,7 +25,7 @@ const Profile = () => {
     actions.resetForm()
 }
     const onDelete = async () => {
-        fetch("http://localhost:3000/profile", {
+        fetch("https://localhost:3000/profile", {
             method: 'DELETE',
             body: JSON.stringify(values),
             headers: { 'Content-Type': 'application/json' },

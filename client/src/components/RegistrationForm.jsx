@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 
 const onSubmit = async (values, actions) => {
-    fetch("http://localhost:3000/register", {
+    fetch("https://localhost:3000/register", {
         method: 'POST',
         body: JSON.stringify(values),
         headers: { 'Content-Type': 'application/json' },

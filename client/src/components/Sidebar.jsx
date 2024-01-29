@@ -13,7 +13,7 @@ function Sidebar({ onSelectChannel }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/allchannels');
+        const response = await axios.get('https://localhost:3000/allchannels');
         setUsers(response.data);
       } catch (error) {
         console.error(`Error fetching users: ${error.message}`);

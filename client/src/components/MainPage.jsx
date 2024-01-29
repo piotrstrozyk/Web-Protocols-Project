@@ -3,7 +3,7 @@
 import Sidebar from './Sidebar';
 //import { Routes, Route, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Nav, Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarRight from './SidebarRight';
 import { Navbar } from 'react-bootstrap';
 import NavBar from './NavBar'
@@ -13,6 +13,37 @@ import { useNavigate } from "react-router-dom";
 import Chat from './Chat';
 
 function MainPage() {
+  const [ws, setWs] = useState(null);
+
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:3001'); // Ustaw adres serwera WebSocket
+
+    socket.addEventListener('open', () => {
+      console.log('WebSocket connection established');
+      setWs(socket);
+    });
+
+    socket.addEventListener('message', (event) => {
+      console.log(`Received message from server: ${event.data}`);
+      // Tutaj możesz przetwarzać otrzymane komunikaty od serwera WebSocket
+    });
+
+    socket.addEventListener('close', () => {
+      console.log('WebSocket connection closed');
+      // Tutaj możesz obsługiwać zdarzenie zamknięcia połączenia
+    });
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    if (ws) {
+      ws.send('Hello, EMQ X!');
+    }
+  };
+
   const [selectedChannel, setSelectedChannel] = useState(null);
 
   const handleChannelSelect = (channel) => {
