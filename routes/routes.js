@@ -136,6 +136,17 @@ router.get('/allchannels', async (req, res) => {
     }
   });
 
+router.post('/profile', async (req, res) => {
+try {
+    const email = req.body.email
+    const user = await User.findOne({email: email});
+    res.json(user);
+} catch (error) {
+    res.status(500).json({ message: error.message });
+}
+});
+
+
 
 
 
@@ -166,11 +177,11 @@ router.delete('/channel', asyncHandler(async (req, res) => {
 router.patch('/profile', async (req, res) => {
     try {
         const userMail = req.cookies.user;
-        const updatedData = req.body;
+        const updatedData = req.body.nick;
 
-        const users = await User.findByEmail(userMail);
+        const users = await User.findOne({ email: userMail });
         if (!users) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: userMail });
           }
         users.set(updatedData);
         const updatedUser = await users.save();
