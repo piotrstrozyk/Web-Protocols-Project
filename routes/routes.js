@@ -12,14 +12,14 @@ const mqtt = require('mqtt');
 
 
 
-// const fs = require('fs');
-// const util = require('util');
-// const log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+const fs = require('fs');
+const util = require('util');
+const log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
 
-// console.log = function(d) { //
-//   log_file.write(util.format(d) + '\n');
+console.log = function(d) { //
+  log_file.write(util.format(d) + '\n');
 
-// };
+};
 
 
 
@@ -86,26 +86,6 @@ router.post('/addchannel',  asyncHandler(async (req, res) => {
 }))
     
 
-router.post('/addcomment',  asyncHandler(async (req, res) => {
-    const comment = new Comment({
-        "user": req.cookies.user,
-        "content": req.body.content,
-        "channel": req.body.channel
-    })
-    const newComment = await comment.save()
-    res.status(201).json(newComment)
-}))
-
-router.post('/comments', async(req, res) => {
-    const comment = new Comment({
-        "user": req.cookies.user,
-        "content": req.body.content,
-        "channel": req.body.channel
-    })
-    const newComment = await comment.save()
-    res.status(201).json(newComment)
-  });
-  
 
 //###################GET
 router.get('/logout', (req, res) => {

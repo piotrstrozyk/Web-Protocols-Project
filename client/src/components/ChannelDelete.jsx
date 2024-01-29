@@ -7,7 +7,7 @@ const ChannelList = () => {
 
   const handleDeleteChannel = async () => {
     try {
-      const response = await axios.delete(`/api/channels/${searchPattern}`);
+      const response = await axios.delete(`https://localhost:3000/api/channels/${searchPattern}`);
       console.log(response.data); // Możesz obsłużyć odpowiedź z serwera
     } catch (error) {
       console.error('Błąd usuwania kanału:', searchPattern);

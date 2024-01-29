@@ -25,7 +25,7 @@ function Sidebar({ onSelectChannel }) {
 
   return (
     <>
-      <Button style={{width: '100px', marginRight: '600px'}} variant="outline-light" onClick={handleShow}>
+      <Button style={{width: '100px', marginRight: '10px'}} variant="outline-light" onClick={handleShow}>
         Channels
       </Button>
 
