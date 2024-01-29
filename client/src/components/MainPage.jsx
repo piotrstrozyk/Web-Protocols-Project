@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Logout from './Logout';
 import { useNavigate } from "react-router-dom";
 //import Chat from './Chat';
+import SearchUsers from './SearchUsers';
 
 function MainPage() {
 

@@ -176,8 +176,8 @@ router.delete('/channel', asyncHandler(async (req, res) => {
 //Edit user
 router.patch('/profile', async (req, res) => {
     try {
-        const userMail = req.cookies.user;
-        const updatedData = req.body.nick;
+        const userMail = req.body.email;
+        const updatedData = req.body;
 
         const users = await User.findOne({ email: userMail });
         if (!users) {
@@ -208,6 +208,29 @@ router.patch('/admin/channel/:id', async (req, res) => {
     }
 })
 
+router.get('/search', async (req, res) => {
+    try {
+      const searchPattern = req.query.pattern; // Pobierz wzorzec z zapytania
+  
+      // Użyj RegExp do tworzenia dynamicznego wzorca wyszukiwania (niezapominaj o zabezpieczeniach przed RegExp Injection)
+      const regexPattern = new RegExp(searchPattern, 'i');
+  
+      // Wyszukaj użytkowników, których pola pasują do wzorca
+      const users = await User.find({
+        $or: [
+          { name: regexPattern },
+          { surname: regexPattern },
+          { nick: regexPattern },
+          { email: regexPattern },
+        ],
+      });
+  
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
 
 
 

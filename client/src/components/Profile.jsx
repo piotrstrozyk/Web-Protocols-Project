@@ -64,7 +64,7 @@ const Profile = () => {
 
     const {values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues: {
-            user: Cookies.get('user'),
+            email: Cookies.get('user'),
             nick: ""
         },
         onSubmit,
@@ -81,7 +81,6 @@ const Profile = () => {
                 id='nick' 
                 type='text' 
                 placeholder='Enter your new nick'
-                value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.email && touched.email ? "input-error" : ""}

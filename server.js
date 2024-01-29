@@ -10,8 +10,8 @@ const cookieParser = require('cookie-parser');
 const uri = process.env.URI;
 const flash = require('express-flash');
 const mqtt = require('mqtt');
-//const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
-//const mqttClient = mqtt.connect(mqttServer)
+const mqttBrokerUrl = 'https://g51ea156.ala.us-east-1.emqxsl.com:8443/api/v5';
+const mqttClient = mqtt.connect(mqttBrokerUrl)
 //const WebSocket = require('ws');
 const https = require('https')
 const http = require('http');
@@ -37,15 +37,15 @@ const path = require('path');
 //     });
 //   });
 
-// mqttClient.on('error', (err) => {
-//     console.log('COnnection error', err);
-//     mqttClient.end()
-// })
-// const io = require('socket.io')(3001)
-// io.on('connection', socket => {
-//     const id = socket.handshake.query.id
-//     socket.join(id)
-// })
+mqttClient.on('error', (err) => {
+    console.log('COnnection error', err);
+    mqttClient.end()
+})
+const io = require('socket.io')(3002)
+io.on('connection', socket => {
+    const id = socket.handshake.query.id
+    socket.join(id)
+})
 
 app.use(cookieParser())
 app.use(flash())
