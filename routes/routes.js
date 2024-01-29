@@ -37,10 +37,6 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage })
 
-router.get('/', (req,res) => {
-    console.log("Hello")
-    res.status(201).json({message: "all good"})
-})
 
 //POST###########################
 router.post('/register',  asyncHandler(async (req, res) => {
@@ -68,7 +64,7 @@ router.post('/login', async (req,res) => {
         if(users) {
             bcrypt.compare(req.body.password, users.password, function(err, isMatch) {
                 if (isMatch) {
-                    res.cookie('user', users.email,  { expires: new Date(Date.now() + (5 * 60000)) }, {sameSite: "none", secure: true})
+                    res.cookie('user', users.email,  { expires: new Date(Date.now() + (5 * 60000)) }, {sameSite: 'None', secure: true})
                     res.status(201).json( { message: `user ${users.nick} logged in` });
                     
                 } else {
@@ -167,12 +163,12 @@ router.delete('/channel', asyncHandler(async (req, res) => {
 
 //PATCH########################################
 //Edit user
-router.patch('/admin/user/:id', async (req, res) => {
+router.patch('/profile', async (req, res) => {
     try {
-        const userId = req.params.id;
+        const userMail = req.cookies.user;
         const updatedData = req.body;
 
-        const users = await User.findById(userId);
+        const users = await User.findByEmail(userMail);
         if (!users) {
             return res.status(404).json({ message: 'User not found' });
           }

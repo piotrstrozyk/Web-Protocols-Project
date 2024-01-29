@@ -12,30 +12,30 @@ const flash = require('express-flash');
 const mqtt = require('mqtt');
 //const mqttServer = 'ws://broker.emqx.io:8084/mqtt'
 //const mqttClient = mqtt.connect(mqttServer)
-const WebSocket = require('ws');
+//const WebSocket = require('ws');
 const https = require('https')
 const http = require('http');
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+//const wss = new WebSocket.Server({ server });
 const key = fs.readFileSync('./openssl.key')
 const cert = fs.readFileSync('./openssl.crt')
 const path = require('path');
 
-wss.on('connection', (ws) => {
-    console.log('WebSocket client connected');
+// wss.on('connection', (ws) => {
+//     console.log('WebSocket client connected');
   
-    ws.on('message', (message) => {
-      console.log(`Received message: ${message}`);
+//     ws.on('message', (message) => {
+//       console.log(`Received message: ${message}`);
   
-      // Tutaj możesz przetwarzać otrzymane komunikaty od klienta WebSocket
-    });
+//       // Tutaj możesz przetwarzać otrzymane komunikaty od klienta WebSocket
+//     });
   
-    ws.on('close', () => {
-      console.log('WebSocket client disconnected');
+//     ws.on('close', () => {
+//       console.log('WebSocket client disconnected');
   
-      // Tutaj możesz obsługiwać zdarzenie zamknięcia połączenia
-    });
-  });
+//       // Tutaj możesz obsługiwać zdarzenie zamknięcia połączenia
+//     });
+//   });
 
 // mqttClient.on('error', (err) => {
 //     console.log('COnnection error', err);
